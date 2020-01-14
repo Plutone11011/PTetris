@@ -3,17 +3,10 @@
 #include <SDL2/SDL_error.h>
 #include <SDL2/SDL_render.h>
 #include <SDL2/SDL_rect.h>
+#include <iostream>
 #include "Piece.h"
+#include "Board.h"
 
-#define SCREEN_HEIGHT 960
-#define SCREEN_WIDTH 1280
-#define LEFT_WALL_X 200
-#define LEFT_WALL_Y 180
-#define WALL_WIDTH 30
-#define WALL_HEIGTH (SCREEN_HEIGHT - LEFT_WALL_Y)
-#define BOARD_WIDTH 820
-#define RIGHT_WALL_X (SCREEN_WIDTH - LEFT_WALL_X - WALL_WIDTH)
-#define RIGHT_WALL_Y LEFT_WALL_Y
 
 //window by reference
 bool initSDL(SDL_Window** window) {
@@ -48,21 +41,24 @@ int main(int argc, char* argv[])
 {
     SDL_Window* window = nullptr ;
     SDL_Event e;
-    SDL_Renderer* renderer = nullptr;
+
     bool winning_condition = false, quit = false ;
 
 
     if (!initSDL(&window)) {
         return 1;
     }
-
+    Board GameBoard(window);
     coordinates pivot = { 2,3 };
     coordinates blocks[]{ { 2,2 } , { 3,3 } , { 3,4 } };
 
     Piece p = makePiece(pivot, blocks, 3);
+    PieceMovement direction = PieceMovement::DOWN ;
+    p.rotate(pivot);
+    p.traslate(direction);
     //Piece p(move(pivot), blocks);
 
-    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+
 
     while (!quit) {
 
@@ -75,18 +71,12 @@ int main(int argc, char* argv[])
             }
         }
         //Clear screen
-        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);//sets color for render
-        SDL_RenderClear(renderer);
+        GameBoard.clearScreen();
 
-        //Render tetris walls
-        SDL_Rect leftwall, rightwall;
-        leftwall = { LEFT_WALL_X, LEFT_WALL_Y, WALL_WIDTH, WALL_HEIGTH };
-        rightwall = { RIGHT_WALL_X, RIGHT_WALL_Y, WALL_WIDTH, WALL_HEIGTH };
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-        SDL_RenderFillRect(renderer, &leftwall);
-        SDL_RenderFillRect(renderer, &rightwall);
+        GameBoard.drawWalls();
+        GameBoard.drawPiece(p);
 
-        SDL_RenderPresent(renderer);
+        GameBoard.renderPresent();
     }
 
     // Close and destroy the window

@@ -29,6 +29,25 @@ void Block::rotate(coordinates pivot) {
 	this->block_coords.y = relY + pivot.y;
 }
 
+void Block::traslate(PieceMovement direction){
+
+    switch(direction){
+
+        case PieceMovement::DOWN:
+            this->block_coords.y++;
+            break;
+        case PieceMovement::LEFT:
+            this->block_coords.x--;
+            break;
+        case PieceMovement::RIGHT:
+            this->block_coords.x++;
+            break ;
+        default:
+            break ;
+    }
+
+}
+
 //piece methods
 /*Piece::Piece(Piece&& piece) noexcept : blocks(move(piece.blocks)), pivot(move(piece.pivot)) {}
 Piece& Piece::operator=(Piece&& piece) noexcept {
@@ -46,9 +65,6 @@ Piece makePiece(coordinates pivot, coordinates* block , unsigned int length) {
 	return piece;
 }
 
-/*Piece::Piece() {
-	pivot = make_unique<Block>();
-}*/
 
 Piece::Piece(coordinates pivot, coordinates *block, unsigned int length) {
 
@@ -59,9 +75,18 @@ Piece::Piece(coordinates pivot, coordinates *block, unsigned int length) {
 	}
 }
 
+//rotates every piece except pivot and traslates every piece
 void Piece::rotate(coordinates pivot) {
 
 	for (auto& block : blocks) {
 		block->rotate(pivot);
 	}
+}
+
+void Piece::traslate(PieceMovement direction){
+
+    for (auto& block : blocks){
+        block->traslate(direction);
+    }
+    pivot->traslate(direction);
 }

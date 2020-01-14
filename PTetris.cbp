@@ -30,12 +30,16 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../../../Libs/SDL2-2.0.10/x86_64-w64-mingw32/include" />
+			<Add directory="../../../Libs/SDL2-2.0.10/i686-w64-mingw32/include" />
 		</Compiler>
 		<Linker>
 			<Add option="-lmingw32 -lSDL2main -lSDL2" />
-			<Add directory="../../../Libs/SDL2-2.0.10/x86_64-w64-mingw32/lib" />
+			<Add directory="../../../Libs/SDL2-2.0.10/i686-w64-mingw32/lib" />
 		</Linker>
+		<Unit filename="Board.cpp" />
+		<Unit filename="Board.h" />
+		<Unit filename="Piece.cpp" />
+		<Unit filename="Piece.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

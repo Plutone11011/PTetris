@@ -1,8 +1,10 @@
-#ifndef PIECE_H
-#define PIECE_H
+#pragma once
 
 #include <vector>
 #include <memory>
+
+#define BLOCK_WIDTH 10
+#define BLOCK_HEIGHT 10
 
 using namespace std;
 
@@ -13,12 +15,15 @@ struct coordinates {
 
 };
 
+enum class PieceMovement { LEFT, RIGHT, DOWN };
+
 class PieceComponent {
 
 public:
 	//factory method
 	//static Piece* makePiece(vector<Block>& blocks);
 	virtual void rotate(coordinates pivot) = 0;
+	virtual void traslate(PieceMovement direction) = 0;
 };
 
 //single block with coordinates
@@ -35,6 +40,7 @@ public:
 	void setCoords(coordinates);
 	//default copy and assignment constructors
 	void rotate(coordinates pivot);
+	void traslate(PieceMovement direction);
 
 	~Block() = default;
 };
@@ -59,8 +65,10 @@ public:
 	~Piece() = default;
 
 	void rotate(coordinates pivot);
+	void traslate(PieceMovement direction);
+
+	friend class Board;
 };
 //rvalue for move constructor
 Piece makePiece(coordinates pivot, coordinates* block, unsigned int length);
 
-#endif
