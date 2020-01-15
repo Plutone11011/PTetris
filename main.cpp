@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Piece.h"
 #include "Board.h"
+#include "Game.h"
 
 
 //window by reference
@@ -42,21 +43,20 @@ int main(int argc, char* argv[])
     SDL_Window* window = nullptr ;
     SDL_Event e;
 
-    bool winning_condition = false, quit = false ;
+    bool  quit = false ;
 
 
     if (!initSDL(&window)) {
         return 1;
     }
     Board GameBoard(window);
-    coordinates pivot = { 2,3 };
-    coordinates blocks[]{ { 2,2 } , { 3,3 } , { 3,4 } };
+    Game tetris;
+    StraightLineBuilder straightLineBuilder ;
 
-    Piece p = makePiece(pivot, blocks, 3);
-    PieceMovement direction = PieceMovement::DOWN ;
-    p.rotate(pivot);
-    p.traslate(direction);
-    //Piece p(move(pivot), blocks);
+    tetris.makePiece(&straightLineBuilder);
+    //PieceMovement direction = PieceMovement::DOWN ;
+    //p.rotate(pivot);
+    //p.traslate(direction);
 
 
 
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         GameBoard.clearScreen();
 
         GameBoard.drawWalls();
-        GameBoard.drawPiece(p);
+//        GameBoard.drawPiece(p);
 
         GameBoard.renderPresent();
     }

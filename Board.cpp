@@ -1,5 +1,4 @@
 #include "Board.h"
-#include <iostream>
 
 Board::Board(SDL_Window *window){
 
@@ -7,7 +6,7 @@ Board::Board(SDL_Window *window){
 }
 
 Board::~Board(){
-    delete renderer;
+    SDL_DestroyRenderer(renderer);
 }
 
 void Board::drawWalls(){
@@ -23,7 +22,6 @@ void Board::drawWalls(){
 
 void Board::drawPiece(const Piece& piece){
 
-    //std::cout << piece.pivot->getCoords().x << "," << piece.pivot->getCoords().y << endl ;
 
     SDL_Rect rblock;
 
