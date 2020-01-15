@@ -53,7 +53,7 @@ int main(int argc, char* argv[])
     Game tetris;
     StraightLineBuilder straightLineBuilder ;
 
-    tetris.makePiece(&straightLineBuilder);
+    Piece *p = tetris.makePiece(&straightLineBuilder);
     //PieceMovement direction = PieceMovement::DOWN ;
     //p.rotate(pivot);
     //p.traslate(direction);
@@ -74,7 +74,7 @@ int main(int argc, char* argv[])
         GameBoard.clearScreen();
 
         GameBoard.drawWalls();
-//        GameBoard.drawPiece(p);
+        GameBoard.drawPiece(p);
 
         GameBoard.renderPresent();
     }

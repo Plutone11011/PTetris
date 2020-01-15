@@ -19,5 +19,5 @@ public:
 
     bool isColliding(int x, int y);
 
-    void makePiece(PieceBuilder *piece_builder);
+    Piece* makePiece(PieceBuilder *piece_builder);
 };

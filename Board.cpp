@@ -20,20 +20,20 @@ void Board::drawWalls(){
     SDL_RenderFillRect(renderer, &rightwall);
 }
 
-void Board::drawPiece(const Piece& piece){
+void Board::drawPiece(Piece* piece){
 
 
     SDL_Rect rblock;
 
     //draws each block of the piece
-    rblock = {LEFT_WALL_X + WALL_WIDTH + (BLOCK_WIDTH*piece.pivot->getCoords().x), LEFT_WALL_Y + (BLOCK_HEIGHT*piece.pivot->getCoords().y) ,BLOCK_WIDTH, BLOCK_HEIGHT};
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+    rblock = {LEFT_WALL_X + WALL_WIDTH + (BLOCK_WIDTH * piece->pivot->getCoords().x), LEFT_WALL_Y + (BLOCK_HEIGHT * piece->pivot->getCoords().y) ,BLOCK_WIDTH, BLOCK_HEIGHT};
+    SDL_SetRenderDrawColor(renderer, piece->getColor()->red, piece->getColor()->green, piece->getColor()->blue, 0xFF);
     SDL_RenderFillRect(renderer, &rblock);
 
 
-    for (auto& block : piece.blocks){
+    for (auto& block : piece->blocks){
         rblock = {LEFT_WALL_X + WALL_WIDTH + (BLOCK_WIDTH*block->getCoords().x), LEFT_WALL_Y + (BLOCK_HEIGHT*block->getCoords().y) ,BLOCK_WIDTH, BLOCK_HEIGHT};
-        SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
+        SDL_SetRenderDrawColor(renderer, piece->getColor()->red, piece->getColor()->green, piece->getColor()->blue, 0xFF);
         SDL_RenderFillRect(renderer, &rblock);
     }
 }

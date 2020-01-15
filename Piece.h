@@ -10,9 +10,17 @@
 #define BLOCK_HEIGHT 10
 #define SCREEN_HEIGHT 960
 #define SCREEN_WIDTH 1280
-#define X_AXIS (SCREEN_WIDTH / BLOCK_WIDTH)
-#define Y_AXIS (SCREEN_HEIGHT / BLOCK_HEIGHT)
+#define LEFT_WALL_X 200
 #define LEFT_WALL_Y 180
+#define WALL_WIDTH 30
+#define WALL_HEIGTH (SCREEN_HEIGHT - LEFT_WALL_Y)
+#define BOARD_WIDTH 820
+#define BOARD_HEIGHT WALL_HEIGTH
+#define RIGHT_WALL_X (SCREEN_WIDTH - LEFT_WALL_X - WALL_WIDTH)
+#define RIGHT_WALL_Y LEFT_WALL_Y
+#define X_AXIS (BOARD_WIDTH / BLOCK_WIDTH)
+#define Y_AXIS (WALL_HEIGTH / BLOCK_HEIGHT)
+#define Y_AXIS_NEGATIVE (LEFT_WALL_Y / BLOCK_HEIGHT)
 
 using namespace std;
 
@@ -68,6 +76,7 @@ class Piece : public PieceComponent {
 protected:
 	unique_ptr<Block> pivot;//smart pointer, self-manages freeing memory when out of scope
 	vector<unique_ptr<Block>> blocks;
+	rgb color;
 public:
 	Piece() = default ;
 
@@ -81,7 +90,10 @@ public:
 
 	void setPivot(coordinates pivot);
 	void setBlocks(coordinates* blocks_coords, unsigned int length);
+	void setColor(const rgb& color);
+
 	coordinates getPivotCoords();
+    rgb* getColor();
 
 	void rotate(coordinates pivot);
 	void traslate(PieceMovement direction);
@@ -97,8 +109,9 @@ public:
     PieceBuilder() = default ;
     virtual ~PieceBuilder() = default ;
 
-    virtual void buildPivot() = 0 ;
+    void buildPivot();
     virtual void buildBlocks() = 0 ;
+    virtual void buildColor() = 0 ;
 
     void createPiece();
 
@@ -111,14 +124,15 @@ protected:
 
 class StraightLineBuilder : public PieceBuilder {
 
-protected:
-    rgb color;
 public:
     StraightLineBuilder() = default ;
+
     ~StraightLineBuilder() override = default ;
 
-    void buildPivot();
+
+    //void buildPivot();
     void buildBlocks();
+    void buildColor();//cyan
 
 } ;
 

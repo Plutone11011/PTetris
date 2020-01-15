@@ -71,6 +71,14 @@ void Piece::setBlocks(coordinates* blocks_coords, unsigned int length){
 	}
 }
 
+void Piece::setColor(const rgb& color){
+    this->color = color ;
+}
+
+rgb* Piece::getColor(){
+    return &color;
+}
+
 coordinates Piece::getPivotCoords(){
     return pivot->getCoords() ;
 }
@@ -94,7 +102,7 @@ void Piece::traslate(PieceMovement direction){
 
 ostream& operator<<(ostream &out, const Piece& piece){
 
-    out << "Pivot: (" << piece.pivot->getCoords().x << "," << piece.pivot->getCoords().y << ")" << endl;
+    out << "Pivot: (" << piece.pivot->getCoords().x << "," << piece.pivot->getCoords().y << ")" << endl ;
     for (auto &block : piece.blocks){
         out << "(" << block->getCoords().x << "," << block->getCoords().y << ")" << endl;
     }
@@ -110,12 +118,12 @@ Piece* PieceBuilder::getPieceMaker(){
     return piece_maker.get();
 }
 
-void StraightLineBuilder::buildPivot(){
+void PieceBuilder::buildPivot(){
 
     srand(time(nullptr));
 
     int x = rand() % X_AXIS;
-    int y = -(rand() % LEFT_WALL_Y);//initially spawn over the walls
+    int y = (rand() % Y_AXIS_NEGATIVE);//initially spawn over the walls
 
     coordinates pivot{x,y} ;
 
@@ -123,6 +131,7 @@ void StraightLineBuilder::buildPivot(){
 
 
 }
+
 //Precondition: buildPivot has already been called
 void StraightLineBuilder::buildBlocks(){
 
@@ -132,4 +141,8 @@ void StraightLineBuilder::buildBlocks(){
 
     piece_maker->setBlocks(blocks, 3);
 
+}
+
+void StraightLineBuilder::buildColor(){
+    piece_maker->setColor({0x00, 0xFF, 0xFF});
 }

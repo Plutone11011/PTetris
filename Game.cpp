@@ -11,12 +11,16 @@ bool Game::isColliding(int x, int y){
     }
 }
 
-void Game::makePiece(PieceBuilder* piece_builder){
+Piece* Game::makePiece(PieceBuilder* piece_builder){
 
     this->piece_builder = piece_builder;
 
     this->piece_builder->createPiece();
     this->piece_builder->buildPivot();
+    this->piece_builder->buildBlocks();
+    this->piece_builder->buildColor();
     Piece* p = this->piece_builder->getPieceMaker() ;
-    std::cout << *p ;
+    std::cout << *p  << std::flush ;
+
+    return p ;
 }

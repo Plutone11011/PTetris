@@ -38,6 +38,8 @@
 		</Linker>
 		<Unit filename="Board.cpp" />
 		<Unit filename="Board.h" />
+		<Unit filename="Game.cpp" />
+		<Unit filename="Game.h" />
 		<Unit filename="Piece.cpp" />
 		<Unit filename="Piece.h" />
 		<Unit filename="main.cpp" />
