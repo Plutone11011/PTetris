@@ -51,9 +51,13 @@ int main(int argc, char* argv[])
     }
     Board GameBoard(window);
     Game tetris;
-    StraightLineBuilder straightLineBuilder ;
-
-    Piece *p = tetris.makePiece(&straightLineBuilder);
+    //StraightLineBuilder straightLineBuilder ;
+    //LightningBolt lightningBolt ;
+    //RhodeIslandBuilder rhodeIslandBuilder ;
+    //WasdBuilder wasdBuilder ;
+    //InverseLBuilder inverseLBuilder;
+    SquareBuilder sq ;
+    Piece *p = tetris.makePiece(&sq);
     //PieceMovement direction = PieceMovement::DOWN ;
     //p.rotate(pivot);
     //p.traslate(direction);

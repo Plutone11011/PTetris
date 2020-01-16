@@ -1,6 +1,3 @@
-#include <ctime>
-#include <cstdlib>
-
 #include "Piece.h"
 //block methods
 Block::Block(coordinates block_coords) : block_coords(block_coords) {}
@@ -50,11 +47,6 @@ void Block::traslate(PieceMovement direction){
 
 }
 
-/*Piece makePiece(coordinates pivot, coordinates* block , unsigned int length) {
-	Piece piece(pivot, block,length);
-	return piece;
-}*/
-
 
 //setter methods called by builder
 void Piece::setPivot(coordinates pivot){
@@ -82,6 +74,7 @@ rgb* Piece::getColor(){
 coordinates Piece::getPivotCoords(){
     return pivot->getCoords() ;
 }
+/*Piece movements*/
 
 //rotates every piece except pivot and traslates every piece
 void Piece::rotate(coordinates pivot) {
@@ -110,39 +103,4 @@ ostream& operator<<(ostream &out, const Piece& piece){
 }
 
 
-void PieceBuilder::createPiece(){
-    piece_maker = make_unique<Piece>();
-}
 
-Piece* PieceBuilder::getPieceMaker(){
-    return piece_maker.get();
-}
-
-void PieceBuilder::buildPivot(){
-
-    srand(time(nullptr));
-
-    int x = rand() % X_AXIS;
-    int y = (rand() % Y_AXIS_NEGATIVE);//initially spawn over the walls
-
-    coordinates pivot{x,y} ;
-
-    piece_maker->setPivot(pivot);
-
-
-}
-
-//Precondition: buildPivot has already been called
-void StraightLineBuilder::buildBlocks(){
-
-    //****
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x - 1, piece_maker->getPivotCoords().y},
-    {piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y}, {piece_maker->getPivotCoords().x + 2, piece_maker->getPivotCoords().y} };
-
-    piece_maker->setBlocks(blocks, 3);
-
-}
-
-void StraightLineBuilder::buildColor(){
-    piece_maker->setColor({0x00, 0xFF, 0xFF});
-}

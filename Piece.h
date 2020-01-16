@@ -20,7 +20,7 @@
 #define RIGHT_WALL_Y LEFT_WALL_Y
 #define X_AXIS (BOARD_WIDTH / BLOCK_WIDTH)
 #define Y_AXIS (WALL_HEIGTH / BLOCK_HEIGHT)
-#define Y_AXIS_NEGATIVE (LEFT_WALL_Y / BLOCK_HEIGHT)
+#define Y_AXIS_BEFORE_WALL (LEFT_WALL_Y / BLOCK_HEIGHT)
 
 using namespace std;
 
@@ -32,7 +32,7 @@ struct coordinates {
 };
 
 enum class PieceMovement { LEFT, RIGHT, DOWN };
-enum class PieceTypes {STRAIGHT_LINE, INVERSE_L, RIGHT_L, SQUARE, WASD, LIGHTNING_BOLT, RHODE_ISLAND};
+//enum class PieceTypes {STRAIGHT_LINE, INVERSE_L, RIGHT_L, SQUARE, WASD, LIGHTNING_BOLT, RHODE_ISLAND};
 
 //color for each different piece
 struct rgb{
@@ -100,39 +100,8 @@ public:
 
     friend ostream& operator<<(ostream &out, const Piece& piece);
 	friend class Board;
-};
-
-//builder pattern to create piece step by step depending on its type
-class PieceBuilder{
-
-public:
-    PieceBuilder() = default ;
-    virtual ~PieceBuilder() = default ;
-
-    void buildPivot();
-    virtual void buildBlocks() = 0 ;
-    virtual void buildColor() = 0 ;
-
-    void createPiece();
-
-    Piece* getPieceMaker();
-
-protected:
-    unique_ptr<Piece> piece_maker ;
+	friend class GameGrid ;
 };
 
 
-class StraightLineBuilder : public PieceBuilder {
-
-public:
-    StraightLineBuilder() = default ;
-
-    ~StraightLineBuilder() override = default ;
-
-
-    //void buildPivot();
-    void buildBlocks();
-    void buildColor();//cyan
-
-} ;
 
