@@ -14,9 +14,10 @@ public:
 
     void createPiece();
 
-    Piece* getPieceMaker();
+    Piece* getPiece();
 
     //after all is done, has to move pointer to game and release it
+    unique_ptr<Piece> getPieceMaker();
 
 protected:
     unique_ptr<Piece> piece_maker ;
@@ -65,6 +66,7 @@ class SquareBuilder : public PieceBuilder{
 public:
     SquareBuilder() = default ;
     ~SquareBuilder() override = default ;
+
 
     void buildBlocks();
     void buildColor();

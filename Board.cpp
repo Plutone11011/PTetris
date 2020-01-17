@@ -1,5 +1,30 @@
 #include "Board.h"
 
+bool GameGrid::isColliding(int x, int y){
+
+    try{
+        return grid[y].test(x);
+    }
+    catch(const out_of_range& e){
+        //the piece bumps against walls or terrain
+        return true;
+    }
+}
+
+bitset<X_AXIS>* GameGrid::getGrid(){
+    return grid ;
+}
+
+void GameGrid::setOccupiedBlocks(Piece *piece){
+
+    grid[piece->pivot->getCoords().y].set(piece->pivot->getCoords().x);
+
+    for (auto &block : piece->blocks){
+        grid[block->getCoords().y].set(block->getCoords().x);
+    }
+
+}
+
 Board::Board(SDL_Window *window){
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -20,21 +45,28 @@ void Board::drawWalls(){
     SDL_RenderFillRect(renderer, &rightwall);
 }
 
+
 void Board::drawPiece(Piece* piece){
 
 
     SDL_Rect rblock;
 
-    //draws each block of the piece
-    rblock = {LEFT_WALL_X + WALL_WIDTH + (BLOCK_WIDTH * piece->pivot->getCoords().x),BLOCK_HEIGHT * piece->pivot->getCoords().y ,BLOCK_WIDTH, BLOCK_HEIGHT};
-    SDL_SetRenderDrawColor(renderer, piece->getColor()->red, piece->getColor()->green, piece->getColor()->blue, 0xFF);
-    SDL_RenderFillRect(renderer, &rblock);
+    //draws each block of the piece if active
+    if (piece->pivot->getActive()){
+        rblock = {LEFT_WALL_X + WALL_WIDTH + (BLOCK_WIDTH * piece->pivot->getCoords().x),BLOCK_HEIGHT * piece->pivot->getCoords().y ,BLOCK_WIDTH, BLOCK_HEIGHT};
+        SDL_SetRenderDrawColor(renderer, piece->getColor()->red, piece->getColor()->green, piece->getColor()->blue, 0xFF);
+        SDL_RenderFillRect(renderer, &rblock);
+    }
+
 
 
     for (auto& block : piece->blocks){
-        rblock = {LEFT_WALL_X + WALL_WIDTH + (BLOCK_WIDTH*block->getCoords().x),BLOCK_HEIGHT*block->getCoords().y ,BLOCK_WIDTH, BLOCK_HEIGHT};
-        SDL_SetRenderDrawColor(renderer, piece->getColor()->red, piece->getColor()->green, piece->getColor()->blue, 0xFF);
-        SDL_RenderFillRect(renderer, &rblock);
+        if (block->getActive()){
+            rblock = {LEFT_WALL_X + WALL_WIDTH + (BLOCK_WIDTH*block->getCoords().x),BLOCK_HEIGHT*block->getCoords().y ,BLOCK_WIDTH, BLOCK_HEIGHT};
+            SDL_SetRenderDrawColor(renderer, piece->getColor()->red, piece->getColor()->green, piece->getColor()->blue, 0xFF);
+            SDL_RenderFillRect(renderer, &rblock);
+        }
+
     }
 }
 

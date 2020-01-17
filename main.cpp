@@ -1,8 +1,6 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_events.h>
 #include <SDL2/SDL_error.h>
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_rect.h>
 #include <iostream>
 #include "Piece.h"
 #include "Board.h"
@@ -14,7 +12,7 @@ bool initSDL(SDL_Window** window) {
 
     bool success = true;
 
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0) {
         SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         success = false ;
     }
@@ -41,23 +39,14 @@ bool initSDL(SDL_Window** window) {
 int main(int argc, char* argv[])
 {
     SDL_Window* window = nullptr ;
-    SDL_Event e;
-
-    bool  quit = false ;
 
 
     if (!initSDL(&window)) {
         return 1;
     }
-    Board GameBoard(window);
-    Game tetris;
-    //StraightLineBuilder straightLineBuilder ;
-    //LightningBolt lightningBolt ;
-    //RhodeIslandBuilder rhodeIslandBuilder ;
-    //WasdBuilder wasdBuilder ;
-    //InverseLBuilder inverseLBuilder;
-    SquareBuilder sq ;
-    Piece *p = tetris.makePiece(&sq);
+
+    Game tetris(window);
+
     //PieceMovement direction = PieceMovement::DOWN ;
     //p.rotate(pivot);
     //p.traslate(direction);
@@ -66,21 +55,9 @@ int main(int argc, char* argv[])
 
     while (!quit) {
 
-        while (SDL_PollEvent(&e) != 0)
-        {
-            //User requests quit
-            if (e.type == SDL_QUIT)
-            {
-                quit = true;
-            }
-        }
-        //Clear screen
-        GameBoard.clearScreen();
+        tetris.eventLoop();
+        tetris.render();
 
-        GameBoard.drawWalls();
-        GameBoard.drawPiece(p);
-
-        GameBoard.renderPresent();
     }
 
     // Close and destroy the window

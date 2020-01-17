@@ -1,37 +1,37 @@
 #pragma once
 
-#include <bitset>
+
+
+#include <list>
 #include "Board.h"
 #include "PieceBuilder.h"
+#include "EventHandler.h"
 
 using namespace std;
 
-class GameGrid{
-
-private:
-    //an array of bitset to represent each position
-    //as either busy or not in the game board
-    bitset<X_AXIS> grid[SCREEN_HEIGHT];
-
-public:
-    GameGrid() = default ;
-
-    bool isColliding(int x, int y);
-    void setOccupiedBlocks(Piece *piece);
-
-    ~GameGrid()=default ;
-
-};
+uint32_t addTimerCallback(uint32_t interval, void* param);
 
 class Game{
 
 private:
     PieceBuilder* piece_builder;
     unique_ptr<GameGrid> gameGrid ;
-public:
-    Game();
+    SDL_TimerID moveTimer ;
+    list<unique_ptr<Piece>> pieces;
+    unique_ptr<Board> board ;
+    EventHandler handler ;
+    SDL_Event e ;
 
-    Piece* makePiece(PieceBuilder *piece_builder);
+    void makePiece(PieceBuilder *piece_builder);
+
+
+public:
+    Game() = default ;
+    Game(SDL_Window* window);
+    ~Game()=default;
+
+    void eventLoop();
+    void render();
 };
 
 

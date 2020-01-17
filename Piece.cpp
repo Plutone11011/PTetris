@@ -1,6 +1,6 @@
 #include "Piece.h"
 //block methods
-Block::Block(coordinates block_coords) : block_coords(block_coords) {}
+Block::Block(coordinates block_coords) : block_coords(block_coords), active(true) {}
 
 void Block::setCoords(coordinates c) {
 	this->block_coords = c;
@@ -8,6 +8,14 @@ void Block::setCoords(coordinates c) {
 
 coordinates Block::getCoords() {
 	return this->block_coords;
+}
+
+void Block::setActive(bool active){
+    this->active = active ;
+}
+
+bool Block::getActive(){
+    return active ;
 }
 
 void Block::rotate(coordinates pivot) {

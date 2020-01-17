@@ -55,6 +55,7 @@ class Block : public PieceComponent {
 
 private:
 	coordinates block_coords;
+	bool active ; //tells if it's still part of the board
 
 public:
 	Block() = default;
@@ -62,6 +63,9 @@ public:
 
 	coordinates getCoords();
 	void setCoords(coordinates);
+
+	void setActive(bool active);
+	bool getActive();
 	//default copy and assignment constructors
 	void rotate(coordinates pivot);
 	void traslate(PieceMovement direction);

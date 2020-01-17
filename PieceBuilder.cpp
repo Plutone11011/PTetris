@@ -6,8 +6,12 @@ void PieceBuilder::createPiece(){
     piece_maker = make_unique<Piece>();
 }
 
-Piece* PieceBuilder::getPieceMaker(){
+Piece* PieceBuilder::getPiece(){
     return piece_maker.get();
+}
+
+unique_ptr<Piece> PieceBuilder::getPieceMaker(){
+    return move(piece_maker);
 }
 
 void PieceBuilder::buildPivot(){

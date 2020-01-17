@@ -42,6 +42,8 @@
 		<Unit filename="Game.h" />
 		<Unit filename="Piece.cpp" />
 		<Unit filename="Piece.h" />
+		<Unit filename="PieceBuilder.cpp" />
+		<Unit filename="PieceBuilder.h" />
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
