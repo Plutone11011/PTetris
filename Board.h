@@ -19,7 +19,7 @@ private:
 public:
     GameGrid() = default ;
 
-    bool isColliding(int x, int y);
+    bool isColliding(Piece *piece);
     void setOccupiedBlocks(Piece *piece);
 
     bitset<X_AXIS>* getGrid();

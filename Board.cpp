@@ -1,14 +1,32 @@
 #include "Board.h"
 
-bool GameGrid::isColliding(int x, int y){
+//if at least one block of the piece is colliding then return true
+bool GameGrid::isColliding(Piece *piece){
 
     try{
-        return grid[y].test(x);
+        if(grid[piece->getPivotCoords().y].test(piece->getPivotCoords().x)){
+            return true ;
+        }
+
     }
     catch(const out_of_range& e){
+        cout << piece->getPivotCoords().x << "," << piece->getPivotCoords().y << endl;
         //the piece bumps against walls or terrain
         return true;
     }
+    for (auto &block: piece->blocks){
+        try{
+            if (grid[block->getCoords().y].test(block->getCoords().x)){
+                return true;
+            }
+        }
+        catch(const out_of_range& e){
+            cout << block->getCoords().x << "," << block->getCoords().y << endl;
+            //the piece bumps against walls or terrain
+            return true;
+        }
+    }
+    return false ;
 }
 
 bitset<X_AXIS>* GameGrid::getGrid(){

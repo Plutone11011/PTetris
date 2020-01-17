@@ -36,6 +36,21 @@ void Block::rotate(coordinates pivot) {
 	this->block_coords.y = relY + pivot.y;
 }
 
+void Block::inverserotate(coordinates pivot){
+
+    //counterclock-wise rotation matrix is (y, -x) (in SDL coordinate system)
+	int relX = this->block_coords.x - pivot.x;
+	int relY = this->block_coords.y - pivot.y;
+	int tmp;
+
+	tmp = -relX;
+	relX = relY;
+	relY = tmp ;
+
+	this->block_coords.x = relX + pivot.x;
+	this->block_coords.y = relY + pivot.y;
+}
+
 void Block::traslate(PieceMovement direction){
 
     switch(direction){
@@ -49,6 +64,9 @@ void Block::traslate(PieceMovement direction){
         case PieceMovement::RIGHT:
             this->block_coords.x++;
             break ;
+        case PieceMovement::UP:
+            this->block_coords.y--;
+            break;
         default:
             break ;
     }
@@ -89,6 +107,14 @@ void Piece::rotate(coordinates pivot) {
 
 	for (auto& block : blocks) {
 		block->rotate(pivot);
+		//std::cout << block->getCoords().x << "," << block->getCoords().y << endl ;
+	}
+}
+
+void Piece::inverserotate(coordinates pivot) {
+
+	for (auto& block : blocks) {
+		block->inverserotate(pivot);
 		//std::cout << block->getCoords().x << "," << block->getCoords().y << endl ;
 	}
 }

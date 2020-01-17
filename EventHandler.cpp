@@ -2,21 +2,37 @@
 
 bool quit = false ;
 
-
+//IACommand is automatic descent of piece, but also down key
 void IACommand::execute(Piece *piece){
     piece->traslate(PieceMovement::DOWN);
+}
+
+void IACommand::undo(Piece *piece){
+    piece->traslate(PieceMovement::UP);
 }
 
 void RotationCommand::execute(Piece *piece){
     piece->rotate(piece->getPivotCoords());
 }
 
+void RotationCommand::undo(Piece *piece){
+    piece->inverserotate(piece->getPivotCoords());
+}
+
 void LeftCommand::execute(Piece *piece){
     piece->traslate(PieceMovement::LEFT);
 }
 
+void LeftCommand::undo(Piece *piece){
+    piece->traslate(PieceMovement::RIGHT);
+}
+
 void RightCommand::execute(Piece *piece){
     piece->traslate(PieceMovement::RIGHT);
+}
+
+void RightCommand::undo(Piece *piece){
+    piece->traslate(PieceMovement::LEFT);
 }
 
 void EventHandler::bindCommands(){
@@ -54,9 +70,3 @@ Command* EventHandler::handleInput(SDL_Event *e){
     return nullptr ;//maybe deal with timer?
 }
 
-void EventHandler::unbindCommands(){
-    delete Key_up;
-    delete Key_right;
-    delete Key_left;
-    delete Key_down;
-}

@@ -23,6 +23,11 @@ Game::Game(SDL_Window* window){
     piece_builder = nullptr;
     gameGrid = make_unique<GameGrid>();
     board = make_unique<Board>(window);
+    createRandomPiece();
+    moveTimer = SDL_AddTimer(500, addTimerCallback, nullptr);
+}
+
+void Game::createRandomPiece(){
     srand(time(nullptr));
     switch(rand() % 7){
         case 0:
@@ -85,9 +90,7 @@ Game::Game(SDL_Window* window){
         default:
             break ;
     }
-    moveTimer = SDL_AddTimer(500, addTimerCallback, nullptr);
 }
-
 
 
 
@@ -100,9 +103,7 @@ void Game::makePiece(PieceBuilder* piece_builder){
     this->piece_builder->buildPivot();
     this->piece_builder->buildBlocks();
     this->piece_builder->buildColor();
-    Piece* p = this->piece_builder->getPiece() ;
 
-    gameGrid->setOccupiedBlocks(p);
 
 }
 
@@ -113,7 +114,13 @@ void Game::eventLoop(){
         Command *command = handler.handleInput(&e);
         //could be null command
         if (command){
-            command->execute(pieces.back().get());
+            Piece *currentPiece = pieces.back().get();
+            int isColliding = gameGrid->isColliding(currentPiece);
+
+            command->execute(currentPiece);
+            if (isColliding){
+                command->undo(currentPiece);
+            }
         }
     }
 }

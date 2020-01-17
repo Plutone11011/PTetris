@@ -30,6 +30,8 @@ public:
     Game(SDL_Window* window);
     ~Game()=default;
 
+    void createRandomPiece();
+
     void eventLoop();
     void render();
 };

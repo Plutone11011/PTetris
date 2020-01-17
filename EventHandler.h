@@ -9,26 +9,31 @@ public:
     Command()=default;
     virtual ~Command() {}
     virtual void execute(Piece *piece) = 0;
+    virtual void undo(Piece *piece) = 0 ;//each undo is contrary operation to execute
 };
 
 class IACommand : public Command{
 public:
     void execute(Piece *piece) override;
+    void undo(Piece *piece) override ;
 };
 
 class RotationCommand : public Command{
 public:
     void execute(Piece *piece) override;
+    void undo(Piece *piece) override ;
 };
 
 class LeftCommand : public Command{
 public:
     void execute(Piece *piece) override;
+    void undo(Piece *piece) override ;
 };
 
 class RightCommand : public Command{
 public:
     void execute(Piece *piece) override;
+    void undo(Piece *piece) override ;
 };
 
 class EventHandler {
@@ -45,6 +50,5 @@ public:
     //now making static binding
     //but it should be configurable by user
     void bindCommands();
-    void unbindCommands();
     Command* handleInput(SDL_Event *e);
 };

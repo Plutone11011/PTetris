@@ -31,7 +31,7 @@ struct coordinates {
 
 };
 
-enum class PieceMovement { LEFT, RIGHT, DOWN };
+enum class PieceMovement { LEFT, RIGHT, DOWN, UP };
 //enum class PieceTypes {STRAIGHT_LINE, INVERSE_L, RIGHT_L, SQUARE, WASD, LIGHTNING_BOLT, RHODE_ISLAND};
 
 //color for each different piece
@@ -48,6 +48,7 @@ public:
 	//static Piece* makePiece(vector<Block>& blocks);
 	virtual void rotate(coordinates pivot) = 0;
 	virtual void traslate(PieceMovement direction) = 0;
+	virtual void inverserotate(coordinates pivot) = 0;
 };
 
 //single block with coordinates
@@ -68,6 +69,7 @@ public:
 	bool getActive();
 	//default copy and assignment constructors
 	void rotate(coordinates pivot);
+	void inverserotate(coordinates pivot);
 	void traslate(PieceMovement direction);
 
 	~Block() = default;
@@ -100,6 +102,7 @@ public:
     rgb* getColor();
 
 	void rotate(coordinates pivot);
+	void inverserotate(coordinates pivot);
 	void traslate(PieceMovement direction);
 
     friend ostream& operator<<(ostream &out, const Piece& piece);
