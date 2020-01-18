@@ -67,6 +67,7 @@ Command* EventHandler::handleInput(SDL_Event *e){
     else if (e->type == SDL_USEREVENT){
         return Key_down;
     }
+    cout << e->type << endl ;
     return nullptr ;//maybe deal with timer?
 }
 

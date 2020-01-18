@@ -108,16 +108,19 @@ void Game::makePiece(PieceBuilder* piece_builder){
 }
 
 void Game::eventLoop(){
+    int isColliding;
+    Command *command ;
+    Piece *currentPiece ;
     while (SDL_PollEvent(&e) != 0)
     {
         handler.bindCommands();
-        Command *command = handler.handleInput(&e);
+        command = handler.handleInput(&e);
         //could be null command
         if (command){
-            Piece *currentPiece = pieces.back().get();
-            int isColliding = gameGrid->isColliding(currentPiece);
-
+            currentPiece = pieces.back().get();
             command->execute(currentPiece);
+
+            isColliding = gameGrid->isColliding(currentPiece);
             if (isColliding){
                 command->undo(currentPiece);
             }
