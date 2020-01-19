@@ -8,7 +8,7 @@
 
 
 //window by reference
-bool initSDL(SDL_Window** window) {
+bool initSDL(SDL_Window*& window) {
 
     bool success = true;
 
@@ -18,7 +18,7 @@ bool initSDL(SDL_Window** window) {
     }
 
     // Create an application window with the following settings:
-    *window = SDL_CreateWindow(
+    window = SDL_CreateWindow(
         "My Tetris",                  // window title
         SDL_WINDOWPOS_UNDEFINED,           // initial x position
         SDL_WINDOWPOS_UNDEFINED,           // initial y position
@@ -28,7 +28,7 @@ bool initSDL(SDL_Window** window) {
     );
 
     // Check that the window was successfully created
-    if (*window == nullptr) {
+    if (window == nullptr) {
         // In the case that the window could not be made...
         SDL_Log("Could not create window: %s\n", SDL_GetError());
         success = false;
@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
     SDL_Window* window = nullptr ;
 
 
-    if (!initSDL(&window)) {
+    if (!initSDL(window)) {
         return 1;
     }
 

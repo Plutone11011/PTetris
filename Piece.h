@@ -6,8 +6,8 @@
 #include <ostream>
 #include <iostream>
 
-#define BLOCK_WIDTH 10
-#define BLOCK_HEIGHT 10
+#define BLOCK_WIDTH 20
+#define BLOCK_HEIGHT 20
 #define SCREEN_HEIGHT 960
 #define SCREEN_WIDTH 1280
 #define LEFT_WALL_X 200
@@ -94,6 +94,7 @@ public:
 
 	~Piece() = default;
 
+    //methods called by builder to allocate memory and instantiate it with parameter
 	void setPivot(coordinates pivot);
 	void setBlocks(coordinates* blocks_coords, unsigned int length);
 	void setColor(const rgb& color);
@@ -104,6 +105,8 @@ public:
 	void rotate(coordinates pivot);
 	void inverserotate(coordinates pivot);
 	void traslate(PieceMovement direction);
+
+	bool isOnTheFloor();
 
     friend ostream& operator<<(ostream &out, const Piece& piece);
 	friend class Board;

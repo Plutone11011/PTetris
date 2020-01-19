@@ -106,7 +106,9 @@ coordinates Piece::getPivotCoords(){
 void Piece::rotate(coordinates pivot) {
 
 	for (auto& block : blocks) {
-		block->rotate(pivot);
+        if (block->getActive()){
+            block->rotate(pivot);
+        }
 		//std::cout << block->getCoords().x << "," << block->getCoords().y << endl ;
 	}
 }
@@ -114,7 +116,10 @@ void Piece::rotate(coordinates pivot) {
 void Piece::inverserotate(coordinates pivot) {
 
 	for (auto& block : blocks) {
-		block->inverserotate(pivot);
+        if (block->getActive()){
+            block->inverserotate(pivot);
+        }
+
 		//std::cout << block->getCoords().x << "," << block->getCoords().y << endl ;
 	}
 }
@@ -122,9 +127,25 @@ void Piece::inverserotate(coordinates pivot) {
 void Piece::traslate(PieceMovement direction){
 
     for (auto& block : blocks){
-        block->traslate(direction);
+        if (block->getActive()){
+            block->traslate(direction);
+        }
     }
     pivot->traslate(direction);
+}
+
+bool Piece::isOnTheFloor(){
+
+    for (auto& block: blocks){
+        if (block->getCoords().y >= (Y_AXIS + Y_AXIS_BEFORE_WALL)){
+            return true ;
+        }
+    }
+    if (pivot->getCoords().y >= (Y_AXIS + Y_AXIS_BEFORE_WALL)){
+        return true ;
+    }
+    return false ;
+
 }
 
 ostream& operator<<(ostream &out, const Piece& piece){

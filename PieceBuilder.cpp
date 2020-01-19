@@ -19,7 +19,7 @@ void PieceBuilder::buildPivot(){
     srand(time(nullptr));
 
     int x = 10 + (rand() % (X_AXIS - 20)); //offset to make sure they don't spawn outside of board horizontally
-    int y = 10 + (rand() % (Y_AXIS_BEFORE_WALL - 20)) ;//offset to make sure they spawn over the walls, but not outside window
+    int y = rand() % Y_AXIS_BEFORE_WALL;//offset to make sure they spawn over the walls, but not outside window
 
     coordinates pivot{x,y} ;
 

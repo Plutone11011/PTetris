@@ -21,10 +21,10 @@ uint32_t addTimerCallback(uint32_t interval, void* param){
 
 Game::Game(SDL_Window* window){
     piece_builder = nullptr;
-    gameGrid = make_unique<GameGrid>();
+    gameGrid = new GameGrid();
     board = make_unique<Board>(window);
     createRandomPiece();
-    moveTimer = SDL_AddTimer(500, addTimerCallback, nullptr);
+
 }
 
 void Game::createRandomPiece(){
@@ -90,6 +90,7 @@ void Game::createRandomPiece(){
         default:
             break ;
     }
+    moveTimer = SDL_AddTimer(500, addTimerCallback, nullptr);
 }
 
 
@@ -104,28 +105,52 @@ void Game::makePiece(PieceBuilder* piece_builder){
     this->piece_builder->buildBlocks();
     this->piece_builder->buildColor();
 
+    cout << this->piece_builder->getPiece() << endl ;
+
 
 }
 
 void Game::eventLoop(){
-    int isColliding;
     Command *command ;
     Piece *currentPiece ;
+    int commandResult ;
+    unsigned int counter = 0 ;
     while (SDL_PollEvent(&e) != 0)
     {
+        counter++ ;
         handler.bindCommands();
         command = handler.handleInput(&e);
         //could be null command
         if (command){
+            command->setGrid(gameGrid);//sets grid for check in execute
+            //cout << *gameGrid << endl ;
             currentPiece = pieces.back().get();
-            command->execute(currentPiece);
+            cout << "Current Piece:" << endl << *currentPiece << endl ;
+            commandResult = command->execute(currentPiece);
 
-            isColliding = gameGrid->isColliding(currentPiece);
-            if (isColliding){
+            if (commandResult == 0){
+                cout << "Undo last move" << endl;
                 command->undo(currentPiece);
             }
+            else if (commandResult == -1){
+                cout << "Creating new piece"<< endl ;
+                SDL_RemoveTimer(moveTimer);
+                command->undo(currentPiece);
+                gameGrid->setOccupiedBlocks(pieces.back().get());
+                createRandomPiece();
+                break ;
+                //moveTimer = SDL_AddTimer(500, addTimerCallback, nullptr);
+                //recreate timer
+
+            }
         }
+        //render();
     }
+    //delete command ;
+}
+
+GameGrid* Game::getGamegrid(){
+    return this->gameGrid;
 }
 
 void Game::render(){
@@ -135,7 +160,16 @@ void Game::render(){
 
     board->drawWalls();
     //always draw last piece added
-    board->drawPiece(pieces.back().get());
+    for (auto &piece : pieces){
+        board->drawPiece(piece.get());
+    }
+
 
     board->renderPresent();
+}
+
+Game::~Game(){
+    delete this->piece_builder;
+    delete this->gameGrid;
+    SDL_RemoveTimer(moveTimer);
 }

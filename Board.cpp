@@ -1,6 +1,6 @@
 #include "Board.h"
 
-//if at least one block of the piece is colliding then return true
+//if at least one block of the piece is with a piece either on left or right
 bool GameGrid::isColliding(Piece *piece){
 
     try{
@@ -40,6 +40,20 @@ void GameGrid::setOccupiedBlocks(Piece *piece){
     for (auto &block : piece->blocks){
         grid[block->getCoords().y].set(block->getCoords().x);
     }
+
+}
+
+ostream& operator<<(ostream & out, const GameGrid & gamegrid){
+    for (int i = 0; i < Y_AXIS + Y_AXIS_BEFORE_WALL; i++){
+        for (size_t j = 0; j < gamegrid.grid[i].size();j++){
+            if (gamegrid.grid[i].test(j)){
+                out << 1 ;
+            }
+            else out << 0 ;
+        }
+        out << endl ;
+    }
+    return out ;
 
 }
 

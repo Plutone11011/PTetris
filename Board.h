@@ -14,7 +14,7 @@ class GameGrid{
 private:
     //an array of bitset to represent each position
     //as either busy or not in the game board
-    bitset<X_AXIS> grid[SCREEN_HEIGHT];
+    bitset<X_AXIS> grid[Y_AXIS + Y_AXIS_BEFORE_WALL];
 
 public:
     GameGrid() = default ;
@@ -25,6 +25,8 @@ public:
     bitset<X_AXIS>* getGrid();
 
     ~GameGrid()=default ;
+
+    friend ostream& operator<<(ostream &out, const GameGrid& gamegrid);
 };
 
 //sort of adapter of renderer

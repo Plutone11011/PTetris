@@ -15,7 +15,7 @@ class Game{
 
 private:
     PieceBuilder* piece_builder;
-    unique_ptr<GameGrid> gameGrid ;
+    GameGrid* gameGrid ;
     SDL_TimerID moveTimer ;
     list<unique_ptr<Piece>> pieces;
     unique_ptr<Board> board ;
@@ -28,7 +28,9 @@ private:
 public:
     Game() = default ;
     Game(SDL_Window* window);
-    ~Game()=default;
+    ~Game();
+
+    GameGrid* getGamegrid();
 
     void createRandomPiece();
 
