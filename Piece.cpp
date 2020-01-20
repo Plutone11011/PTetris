@@ -81,11 +81,10 @@ void Piece::setPivot(coordinates pivot){
 
 }
 
-void Piece::setBlocks(coordinates* blocks_coords, unsigned int length){
+void Piece::setBlocks(vector<coordinates> blocks_coords){
 
-    coordinates* ptr = blocks_coords ;
-	for (ptr; ptr < (blocks_coords + length); ++ptr) {
-		this->blocks.emplace_back(make_unique<Block>(Block(*ptr)));
+	for (auto &coord: blocks_coords) {
+		this->blocks.emplace_back(make_unique<Block>(Block(coord)));
 	}
 }
 
@@ -137,14 +136,52 @@ void Piece::traslate(PieceMovement direction){
 bool Piece::isOnTheFloor(){
 
     for (auto& block: blocks){
-        if (block->getCoords().y >= (Y_AXIS + Y_AXIS_BEFORE_WALL)){
+        if (block->getCoords().y >= Y_AXIS){
             return true ;
         }
     }
-    if (pivot->getCoords().y >= (Y_AXIS + Y_AXIS_BEFORE_WALL)){
+    if (pivot->getCoords().y >= Y_AXIS){
         return true ;
     }
     return false ;
+
+}
+
+void Piece::isOverFilledRow(int row){
+
+    if (this->pivot->getCoords().y < row){
+        this->pivot->traslate(PieceMovement::DOWN);
+    }
+    for (auto &block: this->blocks){
+        if (block->getCoords().y < row){
+            block->traslate(PieceMovement::DOWN);
+        }
+    }
+
+}
+void Piece::blockIsOnFilledRow(int row){
+
+    if (this->pivot->getCoords().y == row){
+        this->pivot->setActive(false);
+    }
+    for (auto &block: this->blocks){
+        if (block->getCoords().y == row){
+            block->setActive(false);
+        }
+    }
+}
+
+bool Piece::pieceHasToBeDeleted(){
+    bool del = true ;
+    if (pivot->getActive()){
+        del = false ;
+    }
+    for (auto &block: blocks){
+        if (block->getActive()){
+            del = false;
+        }
+    }
+    return del ;
 
 }
 

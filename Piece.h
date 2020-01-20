@@ -11,16 +11,13 @@
 #define SCREEN_HEIGHT 960
 #define SCREEN_WIDTH 1280
 #define LEFT_WALL_X 200
-#define LEFT_WALL_Y 180
 #define WALL_WIDTH 30
-#define WALL_HEIGTH (SCREEN_HEIGHT - LEFT_WALL_Y)
+#define WALL_HEIGTH SCREEN_HEIGHT
 #define BOARD_WIDTH 820
 #define BOARD_HEIGHT WALL_HEIGTH
 #define RIGHT_WALL_X (SCREEN_WIDTH - LEFT_WALL_X - WALL_WIDTH)
-#define RIGHT_WALL_Y LEFT_WALL_Y
 #define X_AXIS (BOARD_WIDTH / BLOCK_WIDTH)
 #define Y_AXIS (WALL_HEIGTH / BLOCK_HEIGHT)
-#define Y_AXIS_BEFORE_WALL (LEFT_WALL_Y / BLOCK_HEIGHT)
 
 using namespace std;
 
@@ -96,17 +93,20 @@ public:
 
     //methods called by builder to allocate memory and instantiate it with parameter
 	void setPivot(coordinates pivot);
-	void setBlocks(coordinates* blocks_coords, unsigned int length);
+	void setBlocks(vector<coordinates> blocks_coords);
 	void setColor(const rgb& color);
 
 	coordinates getPivotCoords();
     rgb* getColor();
 
 	void rotate(coordinates pivot);
-	void inverserotate(coordinates pivot);
+	void inverserotate(coordinates pivot);//undo rotation with counterclockwise matrix
 	void traslate(PieceMovement direction);
 
-	bool isOnTheFloor();
+	bool isOnTheFloor();//checks if piece is clashing with the floor
+    void isOverFilledRow(int row);//utility methods for line completion in tetris game
+    void blockIsOnFilledRow(int row);
+    bool pieceHasToBeDeleted();
 
     friend ostream& operator<<(ostream &out, const Piece& piece);
 	friend class Board;

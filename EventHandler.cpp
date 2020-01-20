@@ -24,10 +24,11 @@ void IACommand::undo(Piece *piece){
 }
 
 int BackSpaceCommand::execute(Piece *piece){
-
+    cout << "Piece before space: " << *piece << endl ;
     while (!((piece->isOnTheFloor()) || (gameGrid->isColliding(piece)))){
         piece->traslate(PieceMovement::DOWN);
     }
+    cout << "Piece after space(no undo): " << *piece << endl ;
     return -1;
 }
 

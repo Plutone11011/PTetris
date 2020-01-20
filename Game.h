@@ -33,6 +33,7 @@ public:
     GameGrid* getGamegrid();
 
     void createRandomPiece();
+    void afterFilledRow(int rowFilled);
 
     void eventLoop();
     void render();

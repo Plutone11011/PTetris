@@ -105,9 +105,6 @@ void Game::makePiece(PieceBuilder* piece_builder){
     this->piece_builder->buildBlocks();
     this->piece_builder->buildColor();
 
-    cout << this->piece_builder->getPiece() << endl ;
-
-
 }
 
 void Game::eventLoop(){
@@ -125,22 +122,28 @@ void Game::eventLoop(){
             command->setGrid(gameGrid);//sets grid for check in execute
             //cout << *gameGrid << endl ;
             currentPiece = pieces.back().get();
-            cout << "Current Piece:" << endl << *currentPiece << endl ;
+            //cout << "Current Piece:" << endl << *currentPiece << endl ;
             commandResult = command->execute(currentPiece);
 
             if (commandResult == 0){
-                cout << "Undo last move" << endl;
+                //cout << "Undo last move" << endl;
                 command->undo(currentPiece);
             }
             else if (commandResult == -1){
-                cout << "Creating new piece"<< endl ;
+                //cout << "Creating new piece"<< endl ;
                 SDL_RemoveTimer(moveTimer);
                 command->undo(currentPiece);
+                //cout << "Piece after undo for space: " << *currentPiece << flush ;
                 gameGrid->setOccupiedBlocks(pieces.back().get());
+                int rowFilled ;
+                if ((rowFilled = gameGrid->isRowFilled()) != -1){
+                    afterFilledRow(rowFilled);
+
+                }
+
                 createRandomPiece();
                 break ;
                 //moveTimer = SDL_AddTimer(500, addTimerCallback, nullptr);
-                //recreate timer
 
             }
         }
@@ -153,12 +156,44 @@ GameGrid* Game::getGamegrid(){
     return this->gameGrid;
 }
 
+void Game::afterFilledRow(int rowFilled){
+
+    //each block in that row becomes inactive
+    //then each block above the row is traslated down
+    for (auto it = begin(pieces); it != end(pieces); ++it){
+
+        (*it)->blockIsOnFilledRow(rowFilled);
+        (*it)->isOverFilledRow(rowFilled);
+        if ((*it)->pieceHasToBeDeleted()){
+            pieces.erase(it);
+        }
+
+    }
+    //after messing up with pieces need to first reset then update bitset
+    for (int i = Y_AXIS - 1; i > 0; i--){
+
+        if (gameGrid->getGrid()[i].any()){
+            gameGrid->getGrid()[i].reset();
+        }
+        else {
+            break ;//because bitset starts being set from the bottom
+        }
+
+    }
+    gameGrid->getGrid()[rowFilled].reset();
+    for (auto &piece: pieces){
+        gameGrid->setOccupiedBlocks(piece.get());
+    }
+}
+
 void Game::render(){
 
     //Clear screen
     board->clearScreen();
 
     board->drawWalls();
+    board->drawGridLines();
+    board->highlightCurrentLines(pieces.back().get());
     //always draw last piece added
     for (auto &piece : pieces){
         board->drawPiece(piece.get());

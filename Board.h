@@ -14,7 +14,7 @@ class GameGrid{
 private:
     //an array of bitset to represent each position
     //as either busy or not in the game board
-    bitset<X_AXIS> grid[Y_AXIS + Y_AXIS_BEFORE_WALL];
+    bitset<X_AXIS> grid[Y_AXIS];
 
 public:
     GameGrid() = default ;
@@ -24,6 +24,7 @@ public:
 
     bitset<X_AXIS>* getGrid();
 
+    int isRowFilled();//returns filled row if it exists
     ~GameGrid()=default ;
 
     friend ostream& operator<<(ostream &out, const GameGrid& gamegrid);
@@ -47,6 +48,8 @@ public:
     Board& operator=(Board&&) = delete ;
 
     void drawWalls();
+    void drawGridLines();
+    void highlightCurrentLines(Piece *piece);
     void drawPiece(Piece* piece);
 
     void clearScreen();

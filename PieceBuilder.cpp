@@ -19,7 +19,7 @@ void PieceBuilder::buildPivot(){
     srand(time(nullptr));
 
     int x = 10 + (rand() % (X_AXIS - 20)); //offset to make sure they don't spawn outside of board horizontally
-    int y = rand() % Y_AXIS_BEFORE_WALL;//offset to make sure they spawn over the walls, but not outside window
+    int y = rand() % 10;
 
     coordinates pivot{x,y} ;
 
@@ -33,10 +33,10 @@ void PieceBuilder::buildPivot(){
 void StraightLineBuilder::buildBlocks(){
 
     //****
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x - 1, piece_maker->getPivotCoords().y},
+    vector<coordinates> blocks = {{piece_maker->getPivotCoords().x - 1, piece_maker->getPivotCoords().y},
     {piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y}, {piece_maker->getPivotCoords().x + 2, piece_maker->getPivotCoords().y} };
 
-    piece_maker->setBlocks(blocks, 3);
+    piece_maker->setBlocks(blocks);
 
 }
 
@@ -47,10 +47,10 @@ void StraightLineBuilder::buildColor(){
 
 void InverseLBuilder::buildBlocks(){
 
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y - 1},
+    vector<coordinates> blocks = {{piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y - 1},
     {piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y}, {piece_maker->getPivotCoords().x + 2, piece_maker->getPivotCoords().y}};
 
-    piece_maker->setBlocks(blocks, 3);
+    piece_maker->setBlocks(blocks);
 }
 
 void InverseLBuilder::buildColor(){
@@ -58,10 +58,10 @@ void InverseLBuilder::buildColor(){
 }
 
 void RightLBuilder::buildBlocks(){
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y + 1},
+    vector<coordinates> blocks = {{piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y - 1},
     {piece_maker->getPivotCoords().x - 1, piece_maker->getPivotCoords().y}, {piece_maker->getPivotCoords().x - 2, piece_maker->getPivotCoords().y}};
 
-    piece_maker->setBlocks(blocks, 3);
+    piece_maker->setBlocks(blocks);
 }
 
 void RightLBuilder::buildColor(){
@@ -69,10 +69,10 @@ void RightLBuilder::buildColor(){
 }
 
 void SquareBuilder::buildBlocks(){
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y - 1},
+    vector<coordinates> blocks = {{piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y - 1},
     {piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y - 1}, {piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y}};
 
-    piece_maker->setBlocks(blocks, 3);
+    piece_maker->setBlocks(blocks);
 }
 
 void SquareBuilder::buildColor(){
@@ -81,10 +81,10 @@ void SquareBuilder::buildColor(){
 
 void RhodeIslandBuilder::buildBlocks(){
 
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y},
+    vector<coordinates> blocks = {{piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y},
     {piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y - 1}, {piece_maker->getPivotCoords().x + 2, piece_maker->getPivotCoords().y - 1}};
 
-    piece_maker->setBlocks(blocks, 3);
+    piece_maker->setBlocks(blocks);
 }
 
 void RhodeIslandBuilder::buildColor(){
@@ -93,10 +93,10 @@ void RhodeIslandBuilder::buildColor(){
 
 void WasdBuilder::buildBlocks(){
 
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y},
+    vector<coordinates> blocks = {{piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y},
     {piece_maker->getPivotCoords().x - 1, piece_maker->getPivotCoords().y}, {piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y - 1}};
 
-    piece_maker->setBlocks(blocks, 3);
+    piece_maker->setBlocks(blocks);
 }
 
 void WasdBuilder::buildColor(){
@@ -104,10 +104,10 @@ void WasdBuilder::buildColor(){
 }
 
 void LightningBoltBuilder::buildBlocks(){
-    coordinates blocks[3] = {{piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y},
+    vector<coordinates> blocks = {{piece_maker->getPivotCoords().x + 1, piece_maker->getPivotCoords().y},
     {piece_maker->getPivotCoords().x - 1, piece_maker->getPivotCoords().y - 1}, {piece_maker->getPivotCoords().x, piece_maker->getPivotCoords().y - 1}};
 
-    piece_maker->setBlocks(blocks, 3);
+    piece_maker->setBlocks(blocks);
 }
 
 void LightningBoltBuilder::buildColor(){
