@@ -3,28 +3,34 @@
 //if at least one block of the piece is with a piece either on left or right
 bool GameGrid::isColliding(Piece *piece){
 
-    try{
-        if(grid[piece->getPivotCoords().y].test(piece->getPivotCoords().x)){
-            return true ;
-        }
-
-    }
-    catch(const out_of_range& e){
-        cout << piece->getPivotCoords().x << "," << piece->getPivotCoords().y << endl;
-        //the piece bumps against walls or terrain
-        return true;
-    }
-    for (auto &block: piece->blocks){
+    if (piece->getPivotCoords().y >= 0){
         try{
-            if (grid[block->getCoords().y].test(block->getCoords().x)){
-                return true;
+            if(grid[piece->getPivotCoords().y].test(piece->getPivotCoords().x)){
+                return true ;
             }
+
         }
         catch(const out_of_range& e){
-            cout << block->getCoords().x << "," << block->getCoords().y << endl;
+            cout << piece->getPivotCoords().x << "," << piece->getPivotCoords().y << endl;
             //the piece bumps against walls or terrain
             return true;
         }
+    }
+
+    for (auto &block: piece->blocks){
+        if (block->getCoords().y >= 0){
+            try{
+                if (grid[block->getCoords().y].test(block->getCoords().x)){
+                    return true;
+                }
+            }
+            catch(const out_of_range& e){
+                cout << block->getCoords().x << "," << block->getCoords().y << endl;
+                //the piece bumps against walls or terrain
+                return true;
+            }
+        }
+
     }
     return false ;
 }
